@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenGPT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            height: 80%;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        #chatbox {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user {
+            background-color: #dcf8c6;
+            align-self: flex-start;
+        }
+        .bot {
+            background-color: #ece5dd;
+            align-self: flex-end;
+        }
+        .sender-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            align-self: flex-end;
+        }
+        #input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ccc;
+        }
+        #question-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        #submit-button {
+            padding: 10px 20px;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #submit-button:hover {
+            background-color: #128c7e;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input type="text" id="question-input" placeholder="Enter your question here">
+            <button id="submit-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('submit-button').addEventListener('click', async () => {
+            const question = document.getElementById('question-input').value;
+            if (question) {
+                const userTimestamp = new Date().toLocaleString();
+                addMessage('user', question, userTimestamp);
+
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+                if (data.answer) {
+                    addMessage('bot', data.answer, data.timestamp);
+                } else {
+                    addMessage('bot', 'Sorry, something went wrong.', data.timestamp);
+                }
+
+                document.getElementById('question-input').value = '';
+            }
+        });
+
+        function addMessage(sender, text, timestamp) {
+            const chatbox = document.getElementById('chatbox');
+            const message = document.createElement('div');
+            message.classList.add('message', sender);
+
+            const senderName = document.createElement('div');
+            senderName.classList.add('sender-name');
+            senderName.textContent = sender === 'user' ? 'user' : 'SenGPT';
+            message.appendChild(senderName);
+
+            const messageText = document.createElement('div');
+            messageText.textContent = text;
+            message.appendChild(messageText);
+
+            const messageTimestamp = document.createElement('div');
+            messageTimestamp.classList.add('timestamp');
+            messageTimestamp.textContent = timestamp;
+            message.appendChild(messageTimestamp);
+
+            chatbox.appendChild(message);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
