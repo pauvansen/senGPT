@@ -2,7 +2,7 @@
 
 ## Overview
 
-SenGPT is a Flask-based web application that uses the OpenAI GPT-3.5-turbo model to provide responses to user questions. The responses are cached for efficiency, using both in-memory and SQLite-based caching mechanisms. The application interface is a simple chat-like interface where users can ask questions, and SenGPT responds in German.
+SenGPT is a Flask-based web application that uses the OpenAI GPT-3.5-turbo model to provide responses to user questions. The responses are cached for efficiency, using both in-memory and SQLite-based caching mechanisms. The application interface is a simple chat-like interface where users can ask questions, and SenGPT responds.
 
 ## Features
 
@@ -24,7 +24,7 @@ SenGPT is a Flask-based web application that uses the OpenAI GPT-3.5-turbo model
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/yourusername/sengpt.git
+    git clone https://github.com/pauvansen/sengpt.git
     cd sengpt
     ```
 
@@ -48,7 +48,7 @@ SenGPT is a Flask-based web application that uses the OpenAI GPT-3.5-turbo model
 5. **Run the Flask application:**
 
     ```sh
-    python app.py
+    python main.py
     ```
 
     The application will be available at `http://127.0.0.1:5000`.
