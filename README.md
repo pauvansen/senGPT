@@ -32,7 +32,7 @@ SenGPT is a Flask-based web application that uses the OpenAI GPT-3.5-turbo model
 
     ```sh
     python -m venv venv
-    source venv/bin/activate   # On Windows: venv\Scripts\activate
+    source venv/bin/activate 
     ```
 
 3. **Install the required packages:**
